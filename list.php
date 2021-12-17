@@ -6,6 +6,45 @@
         echo "window.location.replace('login.php');</script>";
         exit;
     }
+
+    $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
+    $id = $_SESSION['id'];
+
+    if(isset($_GET['align_cate'])){
+        $align_cate = $_GET['align_cate'];
+    } else {
+        $align_cate = "idx";
+    }
+
+    if(isset($_GET['align_by'])){
+        $align_by = $_GET['align_by'];
+    } else {
+        $align_by = "ASC";
+    }
+
+    switch($align_cate){
+        case "bunho":
+            $al = "일련번호";
+            break;
+        case "domyun":
+            $al = "도면번호";
+            break;
+        case "myunjuck":
+            $al = "구역/대지면적";
+            break;
+        case "dangye":
+            $al = "사업추진단계";
+            break;
+    }
+
+    switch($align_by){
+        case "asc":
+            $by = "오름차순";
+            break;
+        case "desc":
+            $by = "내림차순";
+            break;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,28 +68,32 @@
     </script>
 </head>
 <body>
-    <h2>리스트</h2></div>
+<?php
+    if(isset($_GET['align_cate']) && isset($_GET['align_by'])){ ?>
+        <h2>[<?=$al?> <?=$by?> 정렬] 리스트</h2></div>
+<?php } else { ?>
+        <h2>리스트</h2></div>
+<?php } ?>
+    
     <button onclick="window.location.href='main.php'">메인으로</button>
     <br>
-    정렬
-    <form>
-        <select>
+    <form method="get" action="list.php">
+        <select name="align_cate">
             <option value="idx">---</option>
             <option value="bunho">일련번호</option>
             <option value="domyun">도면번호</option>
             <option value="myunjuck">면적</option>
             <option value="dangye">사업추진단계</option>
         </select>
-        <select>
+        <select name="align_by">
+            <option value="asc">---</option>
             <option value="asc">오름차순</option>
             <option value="desc">내림차순</option>
         </select>
+        <input type=submit value=검색>
     </form>
     <hr>
-       <?php
-            $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
-            $id = $_SESSION['id'];
-            
+       <?php   
             if(isset($_GET['page'])){
                 $page = $_GET['page'];
             } else {
@@ -70,7 +113,7 @@
             $start = ($page-1)*$per + 1;
             $start -= 1;
 
-            $sql_page = "SELECT * FROM daegu ORDER BY idx ASC limit $start, $per";
+            $sql_page = "SELECT * FROM daegu ORDER BY $align_cate $align_by limit $start, $per";
             $res_page = mysqli_query($conn, $sql_page);
         ?>
         <table>
@@ -158,8 +201,8 @@
                     <option value=guyuck>구역/사업/단지명</option>
                     <option value=where>위치</option>
             </select>
-            <input class=textform type=text name=search id="search_box" autocomplete="off" placeholder="일련번호를 입력하세요." required>
-            <input class=submit type=submit value=검색>
+            <input type=text name=search id="search_box" autocomplete="off" placeholder="일련번호를 입력하세요." required>
+            <input type=submit value=검색>
         </form>
 </body>
 </html>
