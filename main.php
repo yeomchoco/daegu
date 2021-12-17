@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>대구대구</h1>
-    <a href="list.php">리스트</a>
+    <a href="list.php?modified=0">리스트</a>
     <a href="myfavorite.php">즐겨찾기</a>
     <a href="mypage.php">마이페이지</a>
     <?php

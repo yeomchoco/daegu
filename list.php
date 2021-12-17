@@ -9,25 +9,32 @@
 
     $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
     $id = $_SESSION['id'];
+    $modified = $_GET['modified'];
 
     if(isset($_GET['align_cate'])){
         $align_cate = $_GET['align_cate'];
+        if($align_cate!="idx"){
+            $modified += 1;
+        }
     } else {
         $align_cate = "idx";
     }
 
     if(isset($_GET['align_by'])){
         $align_by = $_GET['align_by'];
+        if($align_by!="asc"){
+            $modified += 1;
+        }
     } else {
-        $align_by = "ASC";
+        $align_by = "asc";
     }
 
     switch($align_cate){
+        case "idx":
+            $al = "식별자";
+            break;
         case "bunho":
             $al = "일련번호";
-            break;
-        case "domyun":
-            $al = "도면번호";
             break;
         case "myunjuck":
             $al = "구역/대지면적";
@@ -68,30 +75,26 @@
     </script>
 </head>
 <body>
-<?php
-    if(isset($_GET['align_cate']) && isset($_GET['align_by'])){ ?>
-        <h2>[<?=$al?> <?=$by?> 정렬] 리스트</h2></div>
-<?php } else { ?>
-        <h2>리스트</h2></div>
-<?php } ?>
-    
+    <h2>리스트</h2></div>
     <button onclick="window.location.href='main.php'">메인으로</button>
     <br>
     <form method="get" action="list.php">
         <select name="align_cate">
-            <option value="idx">---</option>
+            <option value="idx">식별자</option>
             <option value="bunho">일련번호</option>
-            <option value="domyun">도면번호</option>
-            <option value="myunjuck">면적</option>
+            <option value="myunjuck">구역/대지면적</option>
             <option value="dangye">사업추진단계</option>
         </select>
         <select name="align_by">
-            <option value="asc">---</option>
             <option value="asc">오름차순</option>
             <option value="desc">내림차순</option>
         </select>
         <input type=submit value=검색>
     </form>
+<?php
+    if($modified != 0){ ?>
+        <span style="color:red;"><?=$al?> 기준 <?=$by?> 정렬되었습니다.</span>
+<?php } ?>
     <hr>
        <?php   
             if(isset($_GET['page'])){
@@ -119,6 +122,7 @@
         <table>
             <thead>
                 <tr align=center>
+                    <th>식별자</th>
                     <th>일련번호</th>
                     <th>도면번호</th>
                     <th>구역/사업/단지명</th>
@@ -158,6 +162,7 @@
         ?>
             <tbody>
                 <tr align=center>
+                    <td><?php echo $row['idx'];?></td>
                     <td><?php echo $row['bunho'];?></td>
                     <td><?php echo $row['domyun'];?></a></td>
                     <td><?php echo $row['guyuck'];?></td>
@@ -182,17 +187,17 @@
             $page_num = 1;
             
             if($page > 1){
-                echo "<a href=\"list.php?page=1\">[처음] </a>";
+                echo "<a href=\"list.php?page=1&align_cate=$align_cate&align_by=$align_by&modified=$modified\">[처음] </a>";
             }
             while($page_num <= $total_page){
                 if($page==$page_num){
-                    echo "<a style=\"color:hotpink;\" href=\"list.php?page=$page_num\">$page_num </a>";
+                    echo "<a style=\"color:hotpink;\" href=\"list.php?page=$page_num&align_cate=$align_cate&align_by=$align_by&modified=$modified\">$page_num </a>";
                 } else {
-                    echo "<a href=\"list.php?page=$page_num\">$page_num </a>"; }
+                    echo "<a href=\"list.php?page=$page_num&align_cate=$align_cate&align_by=$align_by&modified=$modified\">$page_num </a>"; }
                 $page_num++;
             }
             if($page < $total_page){
-                echo "<a href=\"list.php?page=$total_page\">[끝]</a>";
+                echo "<a href=\"list.php?page=$total_page&align_cate=$align_cate&align_by=$align_by&modified=$modified\">[끝]</a>";
             }
         ?>
         <form method="get" action="search.php">
