@@ -9,11 +9,12 @@
     $pre_res = mysqli_fetch_array(mysqli_query($conn, $pre));
     $pre_fav = $pre_res['favorite'];
 
-    $my_fav = join(",", explode("|", $pre_fav)); 
-    
+    $my_fav = explode("|", $pre_fav);
+
     if(in_array($idx, $my_fav)){
-        unset($my_fav[$idx]);
-        $new_fav = join("|",$my_fav);
+        $index = array_search("$idx", $my_fav);
+        unset($my_fav[$index]);
+        $new_fav = implode("|",$my_fav);
     }
 
     $sql = "UPDATE member SET favorite='$new_fav' where id='$id'";
@@ -27,5 +28,4 @@
 
     echo "<script>history.back();</script>";
     exit;
-
 ?>
