@@ -10,7 +10,7 @@
 
     $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
     $id = $_SESSION['id'];
-    $modified = $_GET['modified'];
+    $modified = 0;
 
     if(isset($_GET['align_cate'])){
         $align_cate = $_GET['align_cate'];
@@ -60,6 +60,15 @@
     <meta charset="UTF-8">
     <title>List</title>
     <style>
+        @font-face {
+            font-family: 'IM_Hyemin-Bold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        * {
+            font-family: 'IM_Hyemin-Bold';
+        }
         h4{
             background-color:blueviolet;
             color:white;
@@ -70,9 +79,56 @@
             display:inline;
             margin-right:10px;
         }
+        .res{
+            margin-bottom:14px;
+        }
         a{
             text-decoration: none;
             color:black;
+        }
+        button{
+            border:none;
+            border-radius:8px;
+            background-color:blueviolet;
+            color:white;
+            font-weight:500;
+            padding: 2px 6px;
+        }
+        input[type="submit"]{
+            border:none;
+            border-radius:8px;
+            background-color:purple;
+            color:white;
+            font-weight:500;
+            padding: 2px 6px;
+        }
+        input[type="button"]{
+            border:none;
+            border-radius:8px;
+            background-color:blueviolet;
+            color:white;
+            font-weight:500;
+            padding: 2px 6px;
+        }
+        table.list{
+            margin-top: 6px;
+            margin-bottom: 6px;
+            border-collapse:separate;
+            border-spacing:2px;
+            background: #f8f8f8;
+        }
+        table.list th{
+            background: #EDC9FF;
+        }
+        .align{
+            margin-top: 6px;
+            margin-bottom: 6px;
+        }
+        .form{
+            margin-top: 3px;
+        }
+        .info{
+            margin-top: 6px;
         }
     </style>
     <script>
@@ -80,22 +136,22 @@
             var opt = document.getElementById("search_opt");
             var opt_val = opt.options[opt.selectedIndex].value;
             var info = ""
-            if (opt_val=='bunho'){
-                info = "일련번호를 입력하세요.";
-            } else if (opt_val=='guyuck'){
+            if (opt_val=='guyuck'){
                 info = "구역/사업/단지명을 입력하세요.";
             } else if (opt_val=='where'){
                 info = "위치를 입력하세요.";
+            } else if (opt_val=='yuhyung'){
+                info = "예정구역사업유형을 입력하세요.";
             }
             document.getElementById("search_box").placeholder = info;
         }
     </script>
 </head>
 <body>
-    <h4>대구대구</h4>
-    <h2>리스트</h2></div>
-    <button onclick="window.location.href='main.php'">메인으로</button>
-    <br>
+    <h4><a href="main.php" style="color:white;">대구대구</a></h4>
+    <div class=res><h2>리스트</h2></div>
+    <div class="align"><button onclick="window.location.href='main.php'">메인으로</button>
+    <button onclick="window.location.href='myfavorite.php'">즐겨찾기</button></div>
     <form method="get" action="list.php">
         <select name="align_cate">
             <option value="idx">식별자</option>
@@ -111,9 +167,8 @@
     </form>
 <?php
     if($modified != 0){ ?>
-        <span style="color:red;"><?=$al?> 기준 <?=$by?> 정렬되었습니다.</span>
+        <div class="info" style="color:red;"><?=$al?> 기준 <?=$by?> 정렬되었습니다.</div>
 <?php } ?>
-    <hr>
        <?php
             $id = $_SESSION['id'];
             
@@ -139,7 +194,7 @@
             $sql_page = "SELECT * FROM daegu ORDER BY $align_cate $align_by limit $start, $per";
             $res_page = mysqli_query($conn, $sql_page);
         ?>
-        <table>
+        <table class="list">
             <thead>
                 <tr align=center>
                     <th>식별자</th>
@@ -150,7 +205,7 @@
                     <th>구역/대지면적</th>
                     <th>예정구역사업유형</th>
                     <th>사업추진단계</th>
-                    <th>즐겨찾기</th>
+                    <th>💜</th>
                 </tr>
             </thead>
         <?php
@@ -201,7 +256,6 @@
             </tbody>
         <?php } ?>
         </table>
-        <hr>
         <?php
             $total_page = ceil($total_post / $per);
             $page_num = 1;
@@ -220,13 +274,13 @@
                 echo "<a href=\"list.php?page=$total_page&align_cate=$align_cate&align_by=$align_by&modified=$modified\">[끝]</a>";
             }
         ?>
-        <form method="get" action="search.php">
+        <form class="form" method="get" action="search.php">
             <select name="cate" id="search_opt" onchange="info()">
-                    <option value=bunho>일련번호</option>
                     <option value=guyuck>구역/사업/단지명</option>
                     <option value=where>위치</option>
+                    <option value=yuhyung>예정구역사업유형</option>
             </select>
-            <input type=text name=search id="search_box" autocomplete="off" placeholder="일련번호를 입력하세요." required>
+            <input type=text name=search id="search_box" autocomplete="off" placeholder="구역/사업/단지명을 입력하세요." required>
             <input type=submit value=검색>
         </form>
 </body>
