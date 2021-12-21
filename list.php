@@ -1,4 +1,5 @@
 <?php
+    include 'db.inc';
     session_start();
 
     if(!isset($_SESSION['id']) || !isset($_SESSION['name'])){
@@ -58,6 +59,22 @@
 <head>
     <meta charset="UTF-8">
     <title>List</title>
+    <style>
+        h4{
+            background-color:blueviolet;
+            color:white;
+            text-align:right;
+            padding:2%;
+        }
+        h2{
+            display:inline;
+            margin-right:10px;
+        }
+        a{
+            text-decoration: none;
+            color:black;
+        }
+    </style>
     <script>
         function info() {
             var opt = document.getElementById("search_opt");
@@ -75,6 +92,7 @@
     </script>
 </head>
 <body>
+    <h4>대구대구</h4>
     <h2>리스트</h2></div>
     <button onclick="window.location.href='main.php'">메인으로</button>
     <br>
@@ -96,7 +114,9 @@
         <span style="color:red;"><?=$al?> 기준 <?=$by?> 정렬되었습니다.</span>
 <?php } ?>
     <hr>
-       <?php   
+       <?php
+            $id = $_SESSION['id'];
+            
             if(isset($_GET['page'])){
                 $page = $_GET['page'];
             } else {
@@ -138,25 +158,25 @@
                 $dan = explode(" ", $row['dangye'])[0];
                 switch($dan){
                     case "07":
-                        $dan_color = "#FF3D00";
+                        $dan_color = "#de3ab2";
                         break;
                     case "06":
-                        $dan_color = "#E65100";
+                        $dan_color = "#cc402b";
                         break;
                     case "05":
-                        $dan_color = "#EF6C00";
+                        $dan_color = "#fabc41";
                         break;
                     case "04":
-                        $dan_color = "#F57C00";
+                        $dan_color = "#d6d631";
                         break;
                     case "03":
-                        $dan_color = "#FB8C00";
+                        $dan_color = "#1dd153";
                         break;
                     case "02":
-                        $dan_color = "#FFA726";
+                        $dan_color = "#2796d6";
                         break;
                     case "01":
-                        $dan_color = "#FFD54F";
+                        $dan_color = "#185ec7";
                         break;
                 }
         ?>

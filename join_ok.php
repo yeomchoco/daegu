@@ -1,4 +1,5 @@
 <?php
+    include 'db.inc';
 
     $join_id = $_POST['decide_id'];
     $join_pw = $_POST['join_pw'];
@@ -7,7 +8,7 @@
     $join_email = $_POST['join_email'];
     $join_address = $_POST['join_address'];
 
-    $conn= mysqli_connect('localhost', 'choco', '7173', 'jy');
+    
     
     $multi = "
         INSERT INTO member(id, pw, name, phone, email, created) VALUES ('{$join_id}', '{$join_pw}', '{$join_name}', '{$join_phone}', '{$join_email}', now());

@@ -1,6 +1,7 @@
 <?php
+    include 'db.inc';
     session_start();
-    $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
+    
 
     $cate = $_GET['cate'];
     $search = $_GET['search'];

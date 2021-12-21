@@ -1,6 +1,5 @@
 <?php
     include 'db.inc';
-
     $user_id = $_POST['user_id'];
     $user_pw = $_POST['user_pw'];
     $sql = "SELECT * FROM member where id='$user_id' and pw='$user_pw'";
