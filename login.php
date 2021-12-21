@@ -4,8 +4,23 @@
     <head>
         <meta charset="UTF-8">
         <title>Login</title>
+        <style>
+            h4{
+                background-color:blueviolet;
+                color:white;
+                text-align:right;
+                padding:5%;
+            }
+            h2{
+                padding:2%;
+            }
+            p{
+                padding:10px;
+            }
+        </style>
     </head>
     <body>
+        <h4>대구대구</h4>
         <h2>로그인</h2>
         <?php if(!isset($_SESSION['id']) || !isset($_SESSION['name'])) { ?>
         <form method="post" action="login_ok.php" autocomplete="off">

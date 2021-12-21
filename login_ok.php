@@ -1,7 +1,8 @@
 <?php
+    include 'db.inc';
     $user_id = $_POST['user_id'];
     $user_pw = $_POST['user_pw'];
-    $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
+    
     $sql = "SELECT * FROM member where id='$user_id' and pw='$user_pw'";
     $res = mysqli_fetch_array(mysqli_query($conn,$sql));
     if($res){

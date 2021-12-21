@@ -13,13 +13,26 @@
 <head>
     <meta charset="UTF-8">
     <title>My Favorite</title>
+    <style>
+        h4{
+            background-color:blueviolet;
+            color:white;
+            text-align:right;
+            padding:2%;
+        }
+        a{
+            text-decoration: none;
+            color:black;
+        }
+    </style>
 </head>
 <body>
+    <h4>대구대구</h4>
     <div class=top><h2>즐겨찾기</h2></div>
     <button class=no onclick="window.location.href='main.php'">메인으로</button>
     <hr>
        <?php
-            $conn = mysqli_connect('localhost', 'choco', '7173', 'jy');
+            include 'db.inc';
             $id = $_SESSION['id'];
             
             if(isset($_GET['page'])){

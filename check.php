@@ -1,5 +1,5 @@
 <?php
-    $conn= mysqli_connect('localhost', 'choco', '7173', 'jy');
+    include 'db.inc';
     $uid= $_GET["userid"];
     $sql= "SELECT * FROM member where id='$uid'";
     $result = mysqli_fetch_array(mysqli_query($conn, $sql));
